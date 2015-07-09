@@ -1,8 +1,49 @@
 $(function() {
 
-var complement = tinycolor("#ff6943").complement().toHexString();
+// var cardDiv = '<div class="card"></div>';
+// var boardRow = '<div class="board-row"></div>';
+var sizeInput = 5; // must be > 1 and < 7
+var boardSize = Math.pow(sizeInput, 2)
+var board = $('#game-board');
+var boardWidth = sizeInput * 125 + 'px';
+// var vpw = $(window).width();
+// var vph = $(window).height();
+var card = $('.card')
+// var cardSize = vph / sizeInput + 'px';
+
+// board.css({'height': vph + 'px','width': vph + 'px'});
+// card.css({'width': cardSize, 'height': cardSize})
+
+board.css({'width': boardWidth, 'height': boardWidth})
+
+
+var complement = tinycolor($('.first-color').css('background')).complement().toHexString();
 console.log(complement);
+
 $('.complement').css({background:complement});
+
+var initializeBoard = function() {
+    console.log('first loop');
+    for (var i = 0; i < sizeInput; i++) {
+        board.append('<div class="board-row" id="row' + i + '"></div>')
+        for (var j = 0; j < sizeInput; j++) {
+            console.log(i);
+            $('#row' + i).append('<div class="card" id="card' + j + '"></div>');
+        }
+    }
+}
+
+initializeBoard(); // add a modal to start this function
+
+card.on('click', function () {
+    $(this).addClass('animated flip');
+    $(this).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', endOfCardFlip);
+});
+
+var endOfCardFlip = function() {
+    card.removeClass('animated flip');
+
+}
 
 
 
