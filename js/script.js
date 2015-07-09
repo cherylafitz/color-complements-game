@@ -2,7 +2,7 @@ $(function() {
 
 // var cardDiv = '<div class="card"></div>';
 // var boardRow = '<div class="board-row"></div>';
-var sizeInput = 5; // must be > 1 and < 7
+var sizeInput = 4; // must be even and > 1 and < 7
 var boardSize = Math.pow(sizeInput, 2)
 var board = $('#game-board');
 var boardWidth = sizeInput * 125 + 'px';
@@ -18,97 +18,137 @@ board.css({'width': boardWidth, 'height': boardWidth})
 
 
 var complement = tinycolor($('.first-color').css('background')).complement().toHexString();
-console.log(complement);
+// console.log(complement);
 
 $('.complement').css({background:complement});
 
-var initializeBoard = function() {
-    console.log('first loop');
-    for (var i = 0; i < sizeInput; i++) {
-        board.append('<div class="board-row" id="row' + i + '"></div>')
-        for (var j = 0; j < sizeInput; j++) {
-            console.log(i);
-            $('#row' + i).append('<div class="card" id="card' + j + '"></div>');
-        }
+
+var newRandomColor = function() {
+    var colorsUsed = {};
+    var newColor = tinycolor.random();
+    newColor = newColor.toHexString();
+    colorsUsed[newColor] = true;
+    // console.log(newColor);
+    // console.log(colorsUsed);
+    return newColor;
+}
+
+
+
+var getColorComplements = function() {
+    var colorComplements = [];
+    var newColor;
+    for (var i= 0; i < boardSize / 2; i++) {
+        newColor = newRandomColor();
+        // console.log(newColor);
+        // colorComplements[newColor + i] = tinycolor(newColor).complement().toHexString();
+        colorComplements.push(newColor);
+        colorComplements.push(tinycolor(newColor).complement().toHexString());
+    }
+    // for (var i= 0; i < boardSize / 2; i++) {
+    //     console.log(colorComplements[i]);
+    //     colorComplements.push(tinycolor(colorComplements[i]).complement().toHexString());
+    // }
+        return colorComplements;
+}
+
+colorComplementsArray = getColorComplements();
+
+
+
+var numberOfSquaresArr = [];
+
+for (i=1; i<=boardSize; i++) {
+    numberOfSquaresArr.push(i);
+}
+// shuffles array to be used in adding ids to squares;
+function shuffle(numberOfSquaresArr){
+    for(var j, x, i = numberOfSquaresArr.length; i; j = Math.floor(Math.random() * i), x = numberOfSquaresArr[--i], numberOfSquaresArr[i] = numberOfSquaresArr[j], numberOfSquaresArr[j] = x);
+    return numberOfSquaresArr;
+}
+
+var shuffledNumberOfSquaresArray = shuffle(numberOfSquaresArr);
+
+// object which stores colors, complements, and unique ids
+// var colorSquareObjects = [{
+//         color: '#be65530',
+//         complement: '#53acbe',
+//         randomID: "id" + 10
+//     },
+//     {
+//         color: '#0174a71',
+//         complement: '#a73401',
+//         randomID: "id" + 14
+//     },
+//     {
+//         color: '#570ddd2',
+//         complement: '#93dd0d',
+//         randomID: "id" + 7
+//     }
+//     ]
+
+var assignColors = function() {
+    for (var i = 0; i < boardSize; i++) {
+
     }
 }
 
-initializeBoard(); // add a modal to start this function
 
-card.on('click', function () {
+var initializeBoard = function() {
+    // console.log('first loop');
+    var counter = 0;
+
+    for (var i = 0; i < sizeInput; i++) {
+        board.append('<div class="board-row" id="row' + i + '"></div>')
+        counter += sizeInput - sizeInput;
+        for (var j = 0; j < sizeInput; j++) {
+            var uniqueID = shuffledNumberOfSquaresArray[counter];
+            $('#row' + i).append('<div class="card" id="id' + uniqueID + '"></div>');
+            console.log(colorComplementsArray[counter], '#id' + uniqueID);
+            $('#id' + uniqueID).css('background', colorComplementsArray[counter]);
+            counter++;
+        }
+    }
+    for (k = 1; k <= colorComplementsArray.length; k+=2) {
+        var classCounter = 1;
+        // console.log('#id' + k);
+        // console.log('#id' + (k+1));
+        $('#id' + k).addClass('.pair' + ((k +1)/2));
+        $('#id' + k).append('pair' + ((k +1)/2));
+        $('#id' + (k + 1)).addClass('.pair' + ((k +1)/2));
+        $('#id' + (k + 1)).append('pair' + ((k +1)/2));
+
+        classCounter++;
+    }
+    // troubleshooting color pairs 
+
+}
+
+initializeBoard();
+
+
+// assignIds();
+// addColors() // add a modal to start this function
+
+// fn
+
+for (i = 0; i < boardSize; i++) {
+board.on('click', ('#id' + i), function () {
+    $(this).css('background', '#000');
+
+});
+}
+//colorSquareObjects[i].color
+// fn
+var flipCard = function() {
     $(this).addClass('animated flip');
     $(this).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', endOfCardFlip);
-});
 
+}
+// fn
 var endOfCardFlip = function() {
     card.removeClass('animated flip');
 
 }
-
-
-
-// function rgbToHsl(r, g, b){
-//     r /= 255, g /= 255, b /= 255;
-//     var max = Math.max(r, g, b), min = Math.min(r, g, b);
-//     var h, s, l = (max + min) / 2;
-
-//     if(max == min){
-//         h = s = 0; // achromatic
-//     }else{
-//         var d = max - min;
-//         s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-//         switch(max){
-//             case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-//             case g: h = (b - r) / d + 2; break;
-//             case b: h = (r - g) / d + 4; break;
-//         }
-//         h /= 6;
-//     }
-
-//     return [h, s, l];
-// }
-
-// var h = rgbToHsl(127,25,19)[0];
-
-// function invertH(h) {
-//     var h = rgbToHsl
-//     h *= 360;
-//     if (h <= 180) {
-//         h -= 180;
-//         h /= 360;
-//     }
-//     else {
-//         h += 180;
-//         h /= 360;
-//     }
-//     return h;
-// }
-// // invertH
-// console.log(rgbToHsl(127,25,19)[0]);
-
-
-// function hslToRgb(h, s, l){
-//     var r, g, b;
-
-//     if(s == 0){
-//         r = g = b = l; // achromatic
-//     }else{
-//         function hue2rgb(p, q, t){
-//             if(t < 0) t += 1;
-//             if(t > 1) t -= 1;
-//             if(t < 1/6) return p + (q - p) * 6 * t;
-//             if(t < 1/2) return q;
-//             if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-//             return p;
-//         }
-
-//         var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-//         var p = 2 * l - q;
-//         r = hue2rgb(p, q, h + 1/3);
-//         g = hue2rgb(p, q, h);
-//         b = hue2rgb(p, q, h - 1/3);
-//     }
-
-//     return [r * 255, g * 255, b * 255];
-// }
+//end 
 });
