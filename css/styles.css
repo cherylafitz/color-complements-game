@@ -1,0 +1,29 @@
+body {
+	background: #999;
+}
+
+#game-board {
+	padding: 1em;
+	max-width: 950px;
+	/*height: 100%;*/
+	margin: 0 auto;
+	/*background: */
+}
+
+.first-color,
+.complement,
+.card {
+	min-width: 100px;
+	min-height: 100px;
+	/*max-width: 10%;*/
+	/*max-height: 10%;*/
+	background: #ff6943;
+	margin: 8px;
+	display: inline-block;
+	border-radius: 5px;
+	border: 2px solid #fff	;
+}
+
+.board-row {
+
+}
