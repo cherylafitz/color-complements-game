@@ -2,7 +2,7 @@ $(function() {
 
 // var cardDiv = '<div class="card"></div>';
 // var boardRow = '<div class="board-row"></div>';
-var sizeInput = 6; // must be even and > 1 and < 7
+var sizeInput = 4; // must be even and > 1 and < 7
 var boardSize = Math.pow(sizeInput, 2)
 var board = $('#game-board');
 var boardWidth = sizeInput * 125 + 'px';
@@ -92,43 +92,45 @@ var assignColors = function() {
 }
 
 
+
 var initializeBoard = function() {
     // console.log('first loop');
     var counter = 0;
-
+    var counter2 = 1;
     for (var i = 0; i < sizeInput; i++) {
         board.append('<div class="board-row" id="row' + i + '"></div>')
         counter += sizeInput - sizeInput;
         for (var j = 0; j < sizeInput; j++) {
             var uniqueID = shuffledNumberOfSquaresArray[counter];
             $('#row' + i).append('<div class="card" id="id' + uniqueID + '"></div>');
-            console.log(colorComplementsArray[counter], '#id' + uniqueID);
-            $('#id' + uniqueID).css('background', colorComplementsArray[counter]);
             counter++;
         }
     }
-    for (k = 1; k <= colorComplementsArray.length; k+=2) {
-        var classCounter = 1;
-        // console.log('#id' + k);
-        // console.log('#id' + (k+1));
-        $('#id' + k).addClass('pair' + ((k +1)/2));
-        $('#id' + k).append('pair' + ((k +1)/2));
-        // console.log($('#id' + (k)).css());
-        $('#id' + (k + 1)).addClass('pair' + ((k +1)/2));
-        $('#id' + (k + 1)).append('pair' + ((k +1)/2));
-        // console.log($('#id' + (k + 1)).css());
-
-        classCounter++;
+    for(k = 0; k < boardSize; k++) {
+        $('#id' + (k + 1)).css('background', colorComplementsArray[k]);
+        console.log(colorComplementsArray[k], '#id' + (k + 1));
     }
-    // troubleshooting color pairs 
-
+    for (l = 1; l <= boardSize; l++) {
+        if ((l +1) % 2 === 0) {
+            console.log(counter);
+            console.log(counter);
+            $('#id' + l).addClass('pair' + counter2);
+            // $('#id' + l).append('pair' + counter2);
+            // $('#id' + (counter + 2)).addClass('pair' + ((l + 1)/2));
+            // $('#id' + (counter + 2)).append('pair' + ((l + 1)/2));
+            console.log($('#id' + l),'pair' + counter2);
+        }
+        else {
+            $('#id' + l).addClass('pair' + counter2);
+            console.log($('#id' + l),'pair' + counter2);
+         // $('#id' + l).append('pair' + counter2);
+        counter2++;
+        }
+    }
 }
 
 initializeBoard();
 
-
-// assignIds();
-// addColors() // add a modal to start this function
 
 // fn
 var clickNum = 0;
@@ -182,39 +184,7 @@ board.on('click', '.card', function (e) {
         checkPairsOfSelected();
     }
 });
-    // else if (clickNum <= 2) {
-    //     clickNum++;
-    //     $(this).addClass('selected');
-    //     console.log("clickNum",clickNum);
-    //     console.log($(this));
-    //     $(this).addClass('selected');
-    //     selectedPairNumArr.push($(this)[0].classList[1]);
-        
-    // }
-    // else if (clickNum > 2) {
-    //     e.preventDefault();
-    //     console.log('prevented');
-    // }
-    // else {
-    //     $(this).addClass('selected');
-    // }
-    // for (i = 1; i <=boardSize; i++) {
-    //     
 
-    //     pairCounter = (i + 1)/2;
-    // }
-    // }
-// });
-
-
-
-
-
-// else if $(this).hasClass('selected') {
-        
-// }
-
-//colorSquareObjects[i].color
 // fn
 var flipCard = function() {
     $(this).addClass('animated flip');
