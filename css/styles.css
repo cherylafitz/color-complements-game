@@ -22,8 +22,22 @@ body {
 	display: inline-block;
 	border-radius: 5px;
 	border: 2px solid #222	;
+	padding: 1em;
+}
+.card:hover {
+	cursor: pointer;;
 }
 
 .board-row {
 
+}
+.card.selected {
+	opacity: .8;
+    border: 2px solid red;
+    box-shadow: 2px 2px 2px #777;
+}
+
+.card.selected.chosen {
+	background: black;
+	
 }
