@@ -10,6 +10,15 @@ var boardWidth = sizeInput * 125 + 'px';
 // var vph = $(window).height();
 var card = $('.card')
 // var cardSize = vph / sizeInput + 'px';
+var turn = 1;
+var player1 = 'player1';
+var player2 = 'player2';
+var player1score = 0;
+var player2score = 0;
+var player = player1;
+var playerScore = player1score;
+var turnStatusText = $('#turn-status');
+
 
 // board.css({'height': vph + 'px','width': vph + 'px'});
 // card.css({'width': cardSize, 'height': cardSize})
@@ -43,10 +52,6 @@ var getColorComplements = function() {
         colorComplements.push(newColor);
         colorComplements.push(tinycolor(newColor).complement().toHexString());
     }
-    // for (var i= 0; i < boardSize / 2; i++) {
-    //     console.log(colorComplements[i]);
-    //     colorComplements.push(tinycolor(colorComplements[i]).complement().toHexString());
-    // }
         return colorComplements;
 }
 
@@ -66,32 +71,6 @@ function shuffle(numberOfSquaresArr){
 }
 
 var shuffledNumberOfSquaresArray = shuffle(numberOfSquaresArr);
-
-// object which stores colors, complements, and unique ids
-// var colorSquareObjects = [{
-//         color: '#be65530',
-//         complement: '#53acbe',
-//         randomID: "id" + 10
-//     },
-//     {
-//         color: '#0174a71',
-//         complement: '#a73401',
-//         randomID: "id" + 14
-//     },
-//     {
-//         color: '#570ddd2',
-//         complement: '#93dd0d',
-//         randomID: "id" + 7
-//     }
-//     ]
-
-var assignColors = function() {
-    for (var i = 0; i < boardSize; i++) {
-
-    }
-}
-
-
 
 var initializeBoard = function() {
     // console.log('first loop');
@@ -122,14 +101,15 @@ var initializeBoard = function() {
         }
         else {
             $('#id' + l).addClass('pair' + counter2);
+            // $('#id' + l).append('pair' + counter2);
             console.log($('#id' + l),'pair' + counter2);
          // $('#id' + l).append('pair' + counter2);
         counter2++;
         }
     }
+    turnStatusText.text(player + "'s turn:")
 }
 
-initializeBoard();
 
 
 // fn
@@ -141,6 +121,18 @@ var pairCounter = 0
 // var complementaryChosen = function () {
 //     $('.selected').
 // }
+
+var switchTurns = function() {
+    if (turn % 2 === 0) {
+        player = player1;
+        playerScore = player1score;
+    } else {
+        player = player2;
+        playerScore = player2score;
+    }
+    turnStatusText.text(player + "'s turn:")
+}
+
 
 var checkPairsOfSelected = function() {
     console.log(selectedPairNumArr);
@@ -154,8 +146,14 @@ var checkPairsOfSelected = function() {
             'box-shadow': 'none',
             'border': '2px solid #999'
         });
+        playerScore++;
+        console.log(playerScore);
+        $('#' + player + '-score').text(playerScore);
         clickNum = 0;
         selectedPairNumArr = [];
+        turn++;
+        switchTurns()
+        console.log(turn);
     }
     else if (clickNum <= 1) {
         console.log('choose the complement');
@@ -167,23 +165,32 @@ var checkPairsOfSelected = function() {
         $(choice2).removeClass('selected');
         clickNum = 0;
         selectedPairNumArr = [];
+        turn++;
+        switchTurns()
+        console.log(turn);
     }
 }
 
+var turnStart = function(){
+    console.log(turn);
+    board.on('click', '.card', function (e) {
+        $(this).addClass('animated pulse');
+        if ($(this).hasClass('selected') || clickNum > 1) {
+            e.preventDefault();
+        } else {
+            clickNum++;
+            console.log("clickNum",clickNum);
+            console.log($(this));
+            $(this).addClass('selected');
+            selectedPairNumArr.push($(this)[0].classList[1]);
+            // console.log(selectedPairNumArr);
+            checkPairsOfSelected();
+        }
+    });
+}
 
-board.on('click', '.card', function (e) {
-    if ($(this).hasClass('selected') || clickNum > 1) {
-        e.preventDefault();
-    } else {
-        clickNum++;
-        console.log("clickNum",clickNum);
-        console.log($(this));
-        $(this).addClass('selected');
-        selectedPairNumArr.push($(this)[0].classList[1]);
-        // console.log(selectedPairNumArr);
-        checkPairsOfSelected();
-    }
-});
+initializeBoard();
+turnStart();
 
 // fn
 var flipCard = function() {
