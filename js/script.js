@@ -2,7 +2,7 @@ $(function() {
 
 // var cardDiv = '<div class="card"></div>';
 // var boardRow = '<div class="board-row"></div>';
-var sizeInput = 4; // must be even and > 1 and < 7
+var sizeInput = 6; // must be even and > 1 and < 7
 var boardSize = Math.pow(sizeInput, 2)
 var board = $('#game-board');
 var boardWidth = sizeInput * 125 + 'px';
@@ -33,8 +33,6 @@ var newRandomColor = function() {
     return newColor;
 }
 
-
-
 var getColorComplements = function() {
     var colorComplements = [];
     var newColor;
@@ -52,7 +50,7 @@ var getColorComplements = function() {
         return colorComplements;
 }
 
-colorComplementsArray = getColorComplements();
+console.log(colorComplementsArray = getColorComplements());
 
 
 
@@ -113,10 +111,12 @@ var initializeBoard = function() {
         var classCounter = 1;
         // console.log('#id' + k);
         // console.log('#id' + (k+1));
-        $('#id' + k).addClass('.pair' + ((k +1)/2));
+        $('#id' + k).addClass('pair' + ((k +1)/2));
         $('#id' + k).append('pair' + ((k +1)/2));
-        $('#id' + (k + 1)).addClass('.pair' + ((k +1)/2));
+        // console.log($('#id' + (k)).css());
+        $('#id' + (k + 1)).addClass('pair' + ((k +1)/2));
         $('#id' + (k + 1)).append('pair' + ((k +1)/2));
+        // console.log($('#id' + (k + 1)).css());
 
         classCounter++;
     }
@@ -131,13 +131,89 @@ initializeBoard();
 // addColors() // add a modal to start this function
 
 // fn
+var clickNum = 0;
+var selectedPairNumArr = [];
+var pairCounter = 0
 
-for (i = 0; i < boardSize; i++) {
-board.on('click', ('#id' + i), function () {
-    $(this).css('background', '#000');
 
-});
+// var complementaryChosen = function () {
+//     $('.selected').
+// }
+
+var checkPairsOfSelected = function() {
+    console.log(selectedPairNumArr);
+    var choice1 = '.' + selectedPairNumArr[0];
+    var choice2 = '.' + selectedPairNumArr[1]
+    if (clickNum > 1 && choice1 === choice2) {
+        alert('you selected complementary colors!');
+        // complementaryChosen();
+        $(choice1).css({
+            'background': 'transparent',
+            'box-shadow': 'none',
+            'border': '2px solid #999'
+        });
+        clickNum = 0;
+        selectedPairNumArr = [];
+    }
+    else if (clickNum <= 1) {
+        console.log('choose the complement');
+    }
+    else {
+        $(this).removeClass('selected');
+        alert('sorry! not a pair.');
+        $(choice1).removeClass('selected');
+        $(choice2).removeClass('selected');
+        clickNum = 0;
+        selectedPairNumArr = [];
+    }
 }
+
+
+board.on('click', '.card', function (e) {
+    if ($(this).hasClass('selected') || clickNum > 1) {
+        e.preventDefault();
+    } else {
+        clickNum++;
+        console.log("clickNum",clickNum);
+        console.log($(this));
+        $(this).addClass('selected');
+        selectedPairNumArr.push($(this)[0].classList[1]);
+        // console.log(selectedPairNumArr);
+        checkPairsOfSelected();
+    }
+});
+    // else if (clickNum <= 2) {
+    //     clickNum++;
+    //     $(this).addClass('selected');
+    //     console.log("clickNum",clickNum);
+    //     console.log($(this));
+    //     $(this).addClass('selected');
+    //     selectedPairNumArr.push($(this)[0].classList[1]);
+        
+    // }
+    // else if (clickNum > 2) {
+    //     e.preventDefault();
+    //     console.log('prevented');
+    // }
+    // else {
+    //     $(this).addClass('selected');
+    // }
+    // for (i = 1; i <=boardSize; i++) {
+    //     
+
+    //     pairCounter = (i + 1)/2;
+    // }
+    // }
+// });
+
+
+
+
+
+// else if $(this).hasClass('selected') {
+        
+// }
+
 //colorSquareObjects[i].color
 // fn
 var flipCard = function() {
