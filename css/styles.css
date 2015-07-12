@@ -22,7 +22,7 @@ h1 {
 }
 #status {
 	font-size: 1.4em;
-	/*color: #000;*/
+	color: #000;
 	margin-top: 1em;
 	padding: .5em;
 	/*opacity: .6;*/
@@ -55,6 +55,22 @@ label {
 	background-color: #ffffff;
 	background-image: url("http://www.transparenttextures.com/patterns/asfalt-dark.png");
 
+}
+.active h2 {
+	color: #DB1C2F;
+	-webkit-transition: color 0.5s linear;
+    -moz-transition: color 0.5s linear;
+    -ms-transition: color 0.5s linear;
+    -o-transition: color 0.5s linear;
+    transition: color 0.5s linear;
+}
+.active .panel {
+	background-color: rgba(255,255,255,1);
+	-webkit-transition: background-color 0.5s linear;
+    -moz-transition: background-color 0.5s linear;
+    -ms-transition: background-color 0.5s linear;
+    -o-transition: background-color 0.5s linear;
+    transition: background-color 0.5s linear;
 }
 
 #score-board {

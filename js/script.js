@@ -61,12 +61,14 @@ var shuffledNumberOfSquaresArray = shuffle(numberOfSquaresArr);
 var initializeBoard = function() {
     $('#player1-score').text('0');
     $('#player2-score').text('0');
+    player1score = parseInt($('#player1-score').text()); // starts at 0
+    player2score = parseInt($('#player2-score').text()); 
     for (i=0; i < boardSize; i++)
         $('.card').removeClass('selected');
         $('.card').removeClass('chosen');
     board.css({'width': boardWidth, 'height': boardWidth})
     player = 'player1';
-    turn = 0;
+    // $('.player1-score-board').addClass('active');
     turn = 1;
     clickNum = 0;
     selectedPairNumArr = [];
@@ -114,16 +116,18 @@ var initializeBoard = function() {
 }
 
 // Causes clicking the start button in the modal to initialize the board
-$('#start').focus();
 $('#start').on('click', function(e) {
     initializeBoard();
+    e.preventDefault();
     $('#player1-name').text($('#player1').val());
     $('#player2-name').text($('#player2').val());
     $('#myModal').modal('hide');
-    // e.preventDefault();
+    console.log(player1score);
+    $('#status').fadeIn().text($('#'+ player + '-name').text() + "'s turn.");
+    // 
 });
 $('#new-game').on('click', function() {
-    $('input#player1').focus()
+    $('#player1').focus()
 });
 
 // The following functions deal with game play
@@ -146,6 +150,7 @@ var checkForWinner = function() {
     console.log(player1.text())
     console.log(player2.text())
 
+    $('#status').fadeIn().text('Game over. Click "New Game" to play again.');
     if (player1score === player2score) {
         winner = 'tie';
         swal({   title: "It's a tie!",   
@@ -193,13 +198,17 @@ var switchTurns = function() {
     selectedPairNumArr = [];
     // $('#status').removeClass('animated fadeOutRight slideInRight');
     if (turn % 2 !== 0) {
+        $('.player2-score-board').removeClass('active');
         player = 'player1';
+        $('.player1-score-board').addClass('active');
         // $(player1).css('color', 'red');
         // $(player2).css('color', 'black');
         // return player;
 
     } else {
+        $('.player1-score-board').removeClass('active');
         player = 'player2';
+        $('.player2-score-board').addClass('active');
         // playerScore = player2score;
         // $(player1).css('color', 'black')
         // $(player2).css('color', 'red')
@@ -229,8 +238,10 @@ var checkPairsOfSelected = function() {
         // text: 'You selected complementary colors.',   
         // timer: 1000,   
         // showConfirmButton: false });
-        $('#status').fadeIn().text('Nice work, ' + $('#'+ player + '-name').text() + ' ! You selected complementary colors.');
-        
+        $('#status').fadeIn().text('Nice work, ' + $('#'+ player + '-name').text() + '! You selected complementary colors.');
+        setTimeout(function() {
+            $('#status').fadeIn().text($('#'+ player + '-name').text() + "'s turn.");
+        }, 2000);
         // cell color disappears on match
         $(choice1).css({
             'background': 'transparent',
@@ -249,13 +260,16 @@ var checkPairsOfSelected = function() {
     else {
         console.log('not a match');
         $('#status').fadeIn().text('Sorry, ' + $('#'+ player + '-name').text() + ', those colors are not complementary.');
+        setTimeout(function() {
+            $('#status').fadeIn().text($('#'+ player + '-name').text() + "'s turn.");
+        }, 2000);
         // $('#status').addClass('animated slideInRight')
         // swal({   title: 'Sorry, ' + $('#'+ player + '-name').text() + '.',   
         //     text: "Those colors are not complementary.",   timer: 1000,   showConfirmButton: false });
         setTimeout(function() {
             $(choice1 + '.selected').removeClass('selected');
             $(choice2 + '.selected').removeClass('selected');
-        }, 1000);
+        }, 1500);
         // // $(choice1 + '.selected').removeClass('selected');
         // $(choice2 + '.selected').removeClass('selected');
 
@@ -306,7 +320,7 @@ var turnStart = function(){
 
 
 initializeBoard();
-
+$('#new-game').focus();
 
 // var playAgain = function() {
 
