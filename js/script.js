@@ -7,7 +7,7 @@ var boardWidth = sizeInput * 125 + 'px';
 var card = $('.card')
 var turn = 1;
 var player1 = $('#player1-name');
-var player2 = $('#player1-name');
+var player2 = $('#player2-name');
 var player1score = parseInt($('#player1-score').text()); // starts at 0
 var player2score = parseInt($('#player2-score').text()); // starts at 0
 var player;
@@ -59,8 +59,18 @@ var shuffledNumberOfSquaresArray = shuffle(numberOfSquaresArr);
 
 // Initializes and resets board
 var initializeBoard = function() {
+    $('#player1-score').text('0');
+    $('#player2-score').text('0');
+    for (i=0; i < boardSize; i++)
+        $('.card').removeClass('selected');
+        $('.card').removeClass('chosen');
     board.css({'width': boardWidth, 'height': boardWidth})
     player = 'player1';
+    turn = 0;
+    turn = 1;
+    clickNum = 0;
+    selectedPairNumArr = [];
+    pairsMatched = [];
     board.empty();
     colorComplementsArray = getColorComplements();
     // $(player1).css('color', 'red'); // FIX!
@@ -100,6 +110,7 @@ var initializeBoard = function() {
         counter2++;
         }
     }
+    turnStart();
 }
 
 // Causes clicking the start button in the modal to initialize the board
@@ -130,20 +141,36 @@ var pairCounter = 0;
 
 //checks to see who won
 var checkForWinner = function() {
+    console.log(player1score);
+    console.log(player2score);
+    console.log(player1.text())
+    console.log(player2.text())
+
     if (player1score === player2score) {
         winner = 'tie';
-        alert("It's a tie!");
-        return winner.text;
-
-    }
+        swal({   title: "It's a tie!",   
+        text: "Game over.",   
+        timer: 2000,   
+        showConfirmButton: false });
+        return winner;
+        }
     else if (player1score > player2score) {
         winner = player1;
-        alert(winner.text() + ' is the winner!');
+        swal({   title: winner.text() + ' is the winner!',   
+        text: "Game over.",   
+        timer: 2000,   
+        showConfirmButton: false });
+        // alert(winner.text() + ' is the winner!');
         return winner.text();
     }
     else {
         winner = player2;
-        alert(winner.text() + ' is the winner!')
+        swal({   title: winner.text() + ' is the winner!',   
+        text: "Game over.",   
+        timer: 2000,   
+        showConfirmButton: false });
+        winner = player2;
+        // alert(winner.text() + ' is the winner!')
         return winner.text();
     }
 }
@@ -163,14 +190,14 @@ var switchTurns = function() {
     console.log('the current player before switching is:', player)
     clickNum = 0;
     turn++;
-    $('#turn-results').removeClass('animated fadeOutRight slideInRight');
-    for (i=0; i < boardSize; i++)
-        $('.card').removeClass('selected');
+    selectedPairNumArr = [];
+    // $('#status').removeClass('animated fadeOutRight slideInRight');
     if (turn % 2 !== 0) {
         player = 'player1';
         // $(player1).css('color', 'red');
         // $(player2).css('color', 'black');
         // return player;
+
     } else {
         player = 'player2';
         // playerScore = player2score;
@@ -198,7 +225,11 @@ var checkPairsOfSelected = function() {
     if (clickNum === 2 && choice1 === choice2) {
         console.log('match!');
         trackScore();
-        $('#turn-results').fadeIn().text('Nice work! You selected complementary colors.').delay(1000).fadeOut();
+        // swal({   title: 'Nice work, ' + $('#'+ player + '-name').text() + ' !',   
+        // text: 'You selected complementary colors.',   
+        // timer: 1000,   
+        // showConfirmButton: false });
+        $('#status').fadeIn().text('Nice work, ' + $('#'+ player + '-name').text() + ' ! You selected complementary colors.');
         
         // cell color disappears on match
         $(choice1).css({
@@ -217,14 +248,19 @@ var checkPairsOfSelected = function() {
     }
     else {
         console.log('not a match');
-        $('#turn-results').fadeIn().text('Sorry, those colors are not complementary.').delay(1000).fadeOut();
-        $('#turn-results').addClass('animated slideInRight')
- 
-        $(choice1 + '.selected').removeClass('selected');
+        $('#status').fadeIn().text('Sorry, ' + $('#'+ player + '-name').text() + ', those colors are not complementary.');
+        // $('#status').addClass('animated slideInRight')
+        // swal({   title: 'Sorry, ' + $('#'+ player + '-name').text() + '.',   
+        //     text: "Those colors are not complementary.",   timer: 1000,   showConfirmButton: false });
+        setTimeout(function() {
+            $(choice1 + '.selected').removeClass('selected');
+            $(choice2 + '.selected').removeClass('selected');
+        }, 1000);
+        // // $(choice1 + '.selected').removeClass('selected');
         // $(choice2 + '.selected').removeClass('selected');
 
-        selectedPairNumArr = [];
-        switchTurns();
+
+        switchTurns(choice1, choice2);
     }
 }
 
@@ -234,28 +270,29 @@ var turnStart = function(){
     // console.log('turn starting');
 
     board.on('click', '.card', function (e) {
-        clickNum++;
-            console.log('click', clickNum);
+
 
         // console.log('clicking');
 
         console.log('turn', turn);
 
-        $(this).addClass('animated pulse').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-            $(this).removeClass('animated pulse');
-            if (clickNum === 2) {
-                // console.log(winner);
-            }
-        });
+        // $(this).addClass('animated pulse').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+        //     $(this).removeClass('animated pulse');
+        //     if (clickNum === 2) {
+        //         // console.log(winner);
+        //     }
+        // });
         if ($(this).hasClass('selected') || clickNum > 2) {
+            console.log($(this));
             e.preventDefault();
-            clickNum--;
+            // clickNum--;
             // console.log($(this));
             // console.log($(this).hasClass('selected'));
-            // console.log('prevented default');
+            console.log('prevented default');
             // console.log(clickNum);
         } else {
-
+            clickNum++;
+            console.log('click', clickNum);
             $(this).addClass('selected');
             // console.log('adding class selected');
             // console.log($(this));
@@ -269,7 +306,7 @@ var turnStart = function(){
 
 
 initializeBoard();
-turnStart();
+
 
 // var playAgain = function() {
 

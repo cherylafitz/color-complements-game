@@ -1,9 +1,47 @@
+html {
+
+}
+
 body {
-	background: #CCF6C2;
+
+	background: #E0FFE0;
+	/*background-image: url("http://www.transparenttextures.com/patterns/brick-wall-dark.png");*/
+	 /*url("http://www.transparenttextures.com/patterns/bright-squares.png") repeat;*/
+	 /*background-image: url("http://www.transparenttextures.com/patterns/black-linen.png");*/
+	 background-image: url("http://www.transparenttextures.com/patterns/grey-washed-wall.png");
+	 /*font-family: 'Poiret One', cursive;*/
+	 font-family: 'Architects Daughter', cursive;
+	 color: #15700b;
+}
+h1 {
+	font-size: 4em;
+	text-shadow: 0px 0px 1px #000;
+}
+.container {
+
+}
+#status {
+	font-size: 1.4em;
+	/*color: #000;*/
+	margin-top: 1em;
+	padding: .5em;
+	/*opacity: .6;*/
+}
+.panel {
+	background-color: rgba(255,255,255,.4);
+}
+label {
+	font-size: 1.2em;
 }
 #board {
+	/*background: transparent url("../media/color_palette_w1000.png") no-repeat scroll center 1%;*/
+/*	background: url("../media/color_palette_w1000.png") no-repeat top center fixed;
+		  -webkit-background-size: cover;
+	  -moz-background-size: cover;
+	  -o-background-size: cover;
+	  background-size: cover;*/
 	/*background: #fff;*/
-	padding-top: 1em;
+	/*padding-top: 2em;*/
 }
 #game-board {
 	padding: 1em;
@@ -13,7 +51,9 @@ body {
 	background: #fff;
 	border-radius: 10%;
 	/*border: 1px solid #444	;*/
-	box-shadow: 2px 2px 10px rgba(0,0,0,.8);
+	box-shadow: 2px 2px 5px rgba(0,0,0,.5);
+	background-color: #ffffff;
+	background-image: url("http://www.transparenttextures.com/patterns/asfalt-dark.png");
 
 }
 
@@ -67,7 +107,7 @@ body {
 .card.selected {
 	/*opacity: .8;*/
     border: 2px solid black;
-    box-shadow: 2px 2px 2px #777;
+    box-shadow: 2px 2px 3px #000;
 }
 
 .card.selected.chosen {
