@@ -217,7 +217,7 @@ var checkPairsOfSelected = function() {
         $('#status').fadeIn().text('Nice work, ' + $('#'+ player + '-name').text() + '! You selected complementary colors.');
         setTimeout(function() {
             $('#status').fadeIn().text($('#'+ player + '-name').text() + "'s turn.");
-        }, 2000);
+        }, 1500);
         $(choice1).css({
             'background': 'transparent',
             'box-shadow': 'none',
@@ -240,7 +240,7 @@ var checkPairsOfSelected = function() {
         $('#status').fadeIn().text('Sorry, ' + $('#'+ player + '-name').text() + ', those colors are not complementary.');
         setTimeout(function() {
             $('#status').fadeIn().text($('#'+ player + '-name').text() + "'s turn.");
-        }, 2000);
+        }, 1500);
         setTimeout(function() {
             $(choice1 + '.selected').removeClass('selected');
             $(choice2 + '.selected').removeClass('selected');
