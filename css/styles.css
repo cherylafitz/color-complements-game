@@ -1,17 +1,9 @@
-html {
-
-}
-
 body {
 
 	background: #E0FFE0;
-	/*background-image: url("http://www.transparenttextures.com/patterns/brick-wall-dark.png");*/
-	 /*url("http://www.transparenttextures.com/patterns/bright-squares.png") repeat;*/
-	 /*background-image: url("http://www.transparenttextures.com/patterns/black-linen.png");*/
-	 background-image: url("http://www.transparenttextures.com/patterns/grey-washed-wall.png");
-	 /*font-family: 'Poiret One', cursive;*/
-	 font-family: 'Architects Daughter', cursive;
-	 color: #15700b;
+	background-image: url("../media/grey-washed-wall.png");
+	font-family: 'Architects Daughter', cursive;
+	color: #15700b;
 }
 h1 {
 	font-size: 4em;
@@ -25,7 +17,6 @@ h1 {
 	color: #000;
 	margin-top: 1em;
 	padding: .5em;
-	/*opacity: .6;*/
 }
 .panel {
 	background-color: rgba(255,255,255,.4);
@@ -33,27 +24,14 @@ h1 {
 label {
 	font-size: 1.2em;
 }
-#board {
-	/*background: transparent url("../media/color_palette_w1000.png") no-repeat scroll center 1%;*/
-/*	background: url("../media/color_palette_w1000.png") no-repeat top center fixed;
-		  -webkit-background-size: cover;
-	  -moz-background-size: cover;
-	  -o-background-size: cover;
-	  background-size: cover;*/
-	/*background: #fff;*/
-	/*padding-top: 2em;*/
-}
 #game-board {
 	padding: 1em;
-	/*max-width: 950px;*/
-	/*height: 100%;*/
 	margin: 0 auto;
 	background: #fff;
 	border-radius: 10%;
-	/*border: 1px solid #444	;*/
 	box-shadow: 2px 2px 5px rgba(0,0,0,.5);
 	background-color: #ffffff;
-	background-image: url("http://www.transparenttextures.com/patterns/asfalt-dark.png");
+	background-image: url("../media/asfalt-dark.png");
 
 }
 .active h2 {
@@ -74,22 +52,14 @@ label {
 }
 
 #score-board {
-	/*border-radius: 10px;*/
-	/*background: #cecece;*/
-	/*border: 1px solid #444;*/
 	font-size: 2em;	
 }
 .panel {
 	border-color: #cecece;
 }
-
-.first-color,
-.complement,
 .card {
 	min-width: 100px;
 	min-height: 100px;
-	/*max-width: 10%;*/
-	/*max-height: 10%;*/
 	background: #ff6943;
 	margin: 8px;
 	display: inline-block;
@@ -109,7 +79,7 @@ label {
 #new-game {
 	background-color: #d14b5f;
 	border-color:#db1c2f;
-	margin-bottom: 1.5em;
+	margin-bottom: 1em;
 
 }
 #new-game:hover {
@@ -121,7 +91,6 @@ label {
 
 }
 .card.selected {
-	/*opacity: .8;*/
     border: 2px solid black;
     box-shadow: 2px 2px 3px #000;
 }
