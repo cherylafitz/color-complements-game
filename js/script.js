@@ -11,6 +11,8 @@ var player2 = $('#player2-name');
 var player1score = parseInt($('#player1-score').text()); // starts at 0
 var player2score = parseInt($('#player2-score').text()); // starts at 0
 var player;
+var successIcon = '<span class="glyphicon glyphicon-thumbs-up pull-right" aria-hidden="true"></span>';
+var failIcon = '<span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>';
 
 var playerScore = 0;
 
@@ -68,7 +70,7 @@ var initializeBoard = function() {
         $('.card').removeClass('chosen');
     board.css({'width': boardWidth, 'height': boardWidth})
     player = 'player1';
-    // $('.player1-score-board').addClass('active');
+    $('.player1-score-board').addClass('active');
     turn = 1;
     clickNum = 0;
     selectedPairNumArr = [];
@@ -150,7 +152,6 @@ var checkForWinner = function() {
     console.log(player1.text())
     console.log(player2.text())
 
-    $('#status').fadeIn().text('Game over. Click "New Game" to play again.');
     if (player1score === player2score) {
         winner = 'tie';
         swal({   title: "It's a tie!",   
@@ -183,6 +184,9 @@ var checkForWinner = function() {
 // checks to see if game is over
 var checkForEnd = function() {
     if (pairsMatched.length === boardSize / 2) {
+        setTimeout(function() {
+            $('#status').text('Game over. Click "New Game" to play again.');
+        }, 2000);
         checkForWinner();    
     }
     else {
@@ -234,6 +238,10 @@ var checkPairsOfSelected = function() {
     if (clickNum === 2 && choice1 === choice2) {
         console.log('match!');
         trackScore();
+        $('.active .panel-body h4').append(successIcon);
+        setTimeout(function() {
+            $('.glyphicon').fadeOut();
+        }, 1500);
         // swal({   title: 'Nice work, ' + $('#'+ player + '-name').text() + ' !',   
         // text: 'You selected complementary colors.',   
         // timer: 1000,   
@@ -259,17 +267,21 @@ var checkPairsOfSelected = function() {
     }
     else {
         console.log('not a match');
+        $('.active .panel-body h4').append(failIcon);
+        setTimeout(function() {
+            $('.glyphicon').fadeOut()
+        }, 1500);
         $('#status').fadeIn().text('Sorry, ' + $('#'+ player + '-name').text() + ', those colors are not complementary.');
         setTimeout(function() {
             $('#status').fadeIn().text($('#'+ player + '-name').text() + "'s turn.");
-        }, 2000);
+        }, 1500);
         // $('#status').addClass('animated slideInRight')
         // swal({   title: 'Sorry, ' + $('#'+ player + '-name').text() + '.',   
         //     text: "Those colors are not complementary.",   timer: 1000,   showConfirmButton: false });
         setTimeout(function() {
             $(choice1 + '.selected').removeClass('selected');
             $(choice2 + '.selected').removeClass('selected');
-        }, 1500);
+        }, 1000);
         // // $(choice1 + '.selected').removeClass('selected');
         // $(choice2 + '.selected').removeClass('selected');
 
@@ -290,12 +302,12 @@ var turnStart = function(){
 
         console.log('turn', turn);
 
-        // $(this).addClass('animated pulse').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-        //     $(this).removeClass('animated pulse');
+        $(this).addClass('animated pulse').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+            $(this).removeClass('animated pulse');
         //     if (clickNum === 2) {
         //         // console.log(winner);
         //     }
-        // });
+        });
         if ($(this).hasClass('selected') || clickNum > 2) {
             console.log($(this));
             e.preventDefault();

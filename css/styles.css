@@ -58,11 +58,11 @@ label {
 }
 .active h2 {
 	color: #DB1C2F;
-	-webkit-transition: color 0.5s linear;
-    -moz-transition: color 0.5s linear;
-    -ms-transition: color 0.5s linear;
-    -o-transition: color 0.5s linear;
-    transition: color 0.5s linear;
+	-webkit-transition: color 1s linear;
+    -moz-transition: color 1s linear;
+    -ms-transition: color 1s linear;
+    -o-transition: color 1s linear;
+    transition: color 1s linear;
 }
 .active .panel {
 	background-color: rgba(255,255,255,1);
@@ -124,6 +124,10 @@ label {
 	/*opacity: .8;*/
     border: 2px solid black;
     box-shadow: 2px 2px 3px #000;
+}
+
+.glyphicon-remove {
+	color: red;
 }
 
 .card.selected.chosen {
