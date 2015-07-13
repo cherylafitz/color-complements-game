@@ -244,7 +244,7 @@ var checkPairsOfSelected = function() {
         setTimeout(function() {
             $(choice1 + '.selected').removeClass('selected');
             $(choice2 + '.selected').removeClass('selected');
-        }, 1000);
+        }, 500);
         switchTurns();
     }
 }
