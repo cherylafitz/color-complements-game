@@ -1,5 +1,7 @@
 # color-complements-challenge
 
+[http://cherylafitz.github.io/color-complements-game/](http://cherylafitz.github.io/color-complements-game/)
+
 ###Object
 
 The Color Compliments Challenge is a game in which two players compete to identify the most pairs of complementary colors. Turns alternate after each pairing attempt. The game ends when there are no more pairs to identify. If players end up with the same amount of color pairs, the game is tied. Otherwise, the player who has identified the most pairs wins. The game ended up being much more difficult to play than I had anticipated. 
