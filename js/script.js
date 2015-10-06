@@ -21,27 +21,22 @@ var failIcon = '<span class="glyphicon glyphicon-remove pull-right" aria-hidden=
 var pairsMatched = [];
 var winner = false;
 
-// Generates random color;
+// Generates random color with tinycolor library
 // has potential to check for used colors - will be useful in more advanced version of game
 var newRandomColor = function() {
-    var colorsUsed = {};
-    var newColor = tinycolor.random();
-    newColor = newColor.toHexString();
-    colorsUsed[newColor] = true;
-    return newColor;
+    return tinycolor.random().toHexString();
 }
 
-// gets array of colors and their complements - colors added to even indeces, 
+// gets array of colors and their complements - first colors added to even indeces,
 // complements added to odd indeces immediately following their respective colors
 var getColorComplements = function() {
     var colorComplements = [];
-    var newColor;
     for (var i= 0; i < boardSize / 2; i++) {
-        newColor = newRandomColor();
+        var newColor = newRandomColor();
         colorComplements.push(newColor);
         colorComplements.push(tinycolor(newColor).complement().toHexString());
     }
-        return colorComplements;
+    return colorComplements;
 }
 
 // Array to store number of squares and allow for randomization
@@ -49,21 +44,24 @@ var numberOfSquaresArr = [];
 for (i=1; i<=boardSize; i++) {
     numberOfSquaresArr.push(i);
 }
-// Provides randomization of colors on board - shuffles array to be used in adding ids to squares;
-var shuffle = function(numberOfSquaresArr){
+
+// Randomizes colors on board - shuffles array to be used in adding IDs to squares;
+// pulled this shuffle algorithm from Stack Overflow
+var shuffle = function(array){
     for(var j, x, i = numberOfSquaresArr.length; i; j = Math.floor(Math.random() * i), x = numberOfSquaresArr[--i], numberOfSquaresArr[i] = numberOfSquaresArr[j], numberOfSquaresArr[j] = x);
     return numberOfSquaresArr;
 }
-var shuffledNumberOfSquaresArray = shuffle(numberOfSquaresArr);
 
 // Initializes and resets board
 var initializeBoard = function() {
+    var shuffledNumberOfSquaresArray = shuffle(numberOfSquaresArr);
     $('#player1-score').text('0'); //CHECK
     $('#player2-score').text('0'); //CHECK
     player1score = parseInt($('#player1-score').text()); //CHECK
     player2score = parseInt($('#player2-score').text()); //CHECK
-    for (i=0; i < boardSize; i++)
+    for (var i = 0; i < boardSize; i++) {
         $('.card').removeClass('selected chosen');
+    }
     board.css({'width': boardWidth, 'height': boardWidth})
     player = 'player1';
     $('.player1-score-board').addClass('active');
@@ -87,7 +85,7 @@ var initializeBoard = function() {
             counter++;
         }
     }
-    // adds colors from color array to randomized cells; 
+    // adds colors from color array to randomized cells;
     // each color's complement is assigned to the cell with an ID one higher than its color match
     for(k = 0; k < boardSize; k++) {
         $('#id' + (k + 1)).css('background', colorComplementsArray[k]);
@@ -112,9 +110,9 @@ $('#start').on('click', function(e) {
     $('#player1-name').text($('#player1').val());
     $('#player2-name').text($('#player2').val());
     $('#myModal').modal('hide');
-    console.log(player1score);
+    // console.log(player1score);
     $('#status').fadeIn().text($('#'+ player + '-name').text() + "'s turn.");
-    // 
+    //
 });
 $('#new-game').on('click', function() {
     $('#player1').focus()
@@ -132,26 +130,26 @@ var pairCounter = 0;
 var checkForWinner = function() {
     if (player1score === player2score) {
         winner = 'tie';
-        swal({   title: "It's a tie!",   
-        text: "Game over.",   
-        timer: 2000,   
+        swal({   title: "It's a tie!",
+        text: "Game over.",
+        timer: 2000,
         showConfirmButton: false });
         return winner;
         }
     else if (player1score > player2score) {
         winner = player1;
-        swal({   title: winner.text() + ' is the winner!',   
-        text: "Game over.",   
-        timer: 2000,   
+        swal({   title: winner.text() + ' is the winner!',
+        text: "Game over.",
+        timer: 2000,
         showConfirmButton: false });
         // alert(winner.text() + ' is the winner!');
         return winner.text();
     }
     else {
         winner = player2;
-        swal({   title: winner.text() + ' is the winner!',   
-        text: "Game over.",   
-        timer: 2000,   
+        swal({   title: winner.text() + ' is the winner!',
+        text: "Game over.",
+        timer: 2000,
         showConfirmButton: false });
         winner = player2;
         // alert(winner.text() + ' is the winner!')
@@ -165,7 +163,7 @@ var checkForEnd = function() {
         setTimeout(function() {
             $('#status').text('Game over. Click "New Game" to play again.');
         }, 2000);
-        checkForWinner();    
+        checkForWinner();
     }
     else {
         selectedPairNumArr = [];
@@ -175,7 +173,7 @@ var checkForEnd = function() {
 
 // Causese turns to switch after each pair of clicks
 var switchTurns = function() {
-    console.log('the current player before switching is:', player)
+    // console.log('the current player before switching is:', player)
     clickNum = 0;
     turn++;
     selectedPairNumArr = [];
@@ -208,7 +206,7 @@ var checkPairsOfSelected = function() {
     var choice1 = '.' + selectedPairNumArr[0];
     var choice2 = '.' + selectedPairNumArr[1];
     if (clickNum === 2 && choice1 === choice2) {
-        console.log('match!');
+        // console.log('match!');
         trackScore();
         $('.active .panel-body h4').append(successIcon);
         setTimeout(function() {
@@ -224,15 +222,15 @@ var checkPairsOfSelected = function() {
             'border': '2px solid #999'
         });
         $(choice1).addClass('chosen');
-        $(choice2).addClass('chosen');        
+        $(choice2).addClass('chosen');
         pairsMatched.push(choice1);
         checkForEnd();
     }
     else if (clickNum < 2) {
-        console.log('choose the complement');
+        // console.log('choose the complement');
     }
     else {
-        console.log('not a match');
+        // console.log('not a match');
         $('.active .panel-body h4').append(failIcon);
         setTimeout(function() {
             $('.glyphicon').fadeOut()
@@ -252,17 +250,17 @@ var checkPairsOfSelected = function() {
 // Starts and manages the turns - is running throughout the game
 var turnStart = function(){
     board.on('click', '.card', function (e) {
-        console.log('turn', turn);
+        // console.log('turn', turn);
         $(this).addClass('animated pulse').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
             $(this).removeClass('animated pulse');
         });
         if ($(this).hasClass('selected') || clickNum > 2) {
-            console.log($(this));
+            // console.log($(this));
             e.preventDefault();
-            console.log('prevented default');
+            // console.log('prevented default');
         } else {
             clickNum++;
-            console.log('click', clickNum);
+            // console.log('click', clickNum);
             $(this).addClass('selected');
             selectedPairNumArr.push($(this)[0].classList[1]);
             checkPairsOfSelected();
@@ -273,5 +271,5 @@ var turnStart = function(){
 initializeBoard();
 $('#new-game').focus();
 
-//end 
+//end
 });
